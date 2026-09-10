@@ -93,12 +93,12 @@
         
         <label for="shipSelect">1. Selecione o Navio:</label>
         <select id="shipSelect" onchange="updateResourceList()">
-            <option value="Caravela de Epheria">Caravela de Epheria (T4)</option>
-            <option value="Galeão de Epheria">Galeão de Epheria (T4)</option>
-            <option value="Carraca: Avanço">Carraca: Avanço (Advance)</option>
-            <option value="Carraca: Equilíbrio">Carraca: Equilíbrio (Balance)</option>
-            <option value="Carraca: Volante">Carraca: Volante</option>
-            <option value="Carraca: Valor">Carraca: Valor</option>
+            <option value="Caravela de Epheria">Navio Mercante de Epheria (T4)</option>
+            <option value="Galeão de Epheria">Contratorpedeiro de Epheria (T4)</option>
+            <option value="Carraca: Avanço">Carraca: Bravura</option>
+            <option value="Carraca: Equilíbrio">Carraca: Equilíbrio</option>
+            <option value="Carraca: Volante">Carraca: Emergência</option>
+            <option value="Carraca: Valor">Carraca: Gradual</option>
         </select>
 
         <label for="resourceSelect">2. Selecione o Recurso:</label>
@@ -140,68 +140,77 @@
         // Banco de Dados de Materiais do BDO
         const bdoDatabase = {
             "Caravela de Epheria": [
-                { name: "Licença: Veleiro de Epheria", qty: 1 },
-                { name: "Madeira Compensada Grafite Revestida de Ilha", qty: 100 },
-                { name: "Aço de Ilha Tecido com Névoa", qty: 100 },
-                { name: "Pilar de Madeira Trata com Seiva Marinha", qty: 100 },
-                { name: "Adesivo de Aritmética de Maré", qty: 100 },
-                { name: "Lingote de Cobalto Verde", qty: 50 },
-                { name: "Madeira Enfestada", qty: 500 },
-                { name: "Aço Enfestado", qty: 500 }
+                { name: "Licença: Navio Mercante de Epheria", qty: 1 },
+                { name: "+10 Epheria: Proa Velha", qty: 1 },
+                { name: "+10 Epheria: Casco Velho", qty: 1 },
+                { name: "+10 Epheria: Canhão Velho", qty: 1 },
+                { name: "+10 Epheria: Vela de Vento Velha", qty: 1 },
+                { name: "Barra de Grafite para Expansão", qty: 100 },
+                { name: "Madeira para Expansão", qty: 100 },
+                { name: "Cola para Expansão", qty: 100 },
+                { name: "Madeira Compensada Revestida de Rubus", qty: 100 },
+                { name: "Barra de Sal Gema", qty: 100 },
+                { name: "Cola com Memórias do Mar Profundo", qty: 4 },
+                { name: "Caule de Alga Profunda", qty: 4 }
             ],
             "Galeão de Epheria": [
-                { name: "Licença: Fragata de Epheria", qty: 1 },
-                { name: "Madeira Compensada Grafite Revestida de Ilha", qty: 100 },
-                { name: "Aço de Ilha Tecido com Névoa", qty: 100 },
-                { name: "Pilar de Madeira Trata com Seiva Marinha", qty: 100 },
-                { name: "Adesivo de Aritmética de Maré", qty: 100 },
-                { name: "Lingote de Cobalto Verde", qty: 50 },
-                { name: "Madeira Enfestada", qty: 500 },
-                { name: "Aço Enfestado", qty: 500 }
+                { name: "Licença: Contratorpedeiro de Epheria", qty: 1 },
+                { name: "+10 Epheria: Proa Velha", qty: 1 },
+                { name: "+10 Epheria: Casco Velho", qty: 1 },
+                { name: "+10 Epheria: Canhão Velho", qty: 1 },
+                { name: "+10 Epheria: Vela de Vento Velha", qty: 1 },
+                { name: "Barra de Grafite para Expansão", qty: 100 },
+                { name: "Madeira para Expansão", qty: 100 },
+                { name: "Cola para Expansão", qty: 100 },
+                { name: "Madeira Compensada Revestida de Rubus", qty: 100 },
+                { name: "Madeira de Construção com um brilho de onda", qty: 3 },
+                { name: "Barra de Cobalto", qty: 2 },
+                { name: "Madeira Compensada Gravada com Escama da Lua", qty: 10 },
+                { name: "Caule de Alga Profunda", qty: 4}
             ],
             "Carraca: Avanço": [
-                { name: "Caravela de Epheria +10 (Equipamentos)", qty: 1 },
-                { name: "Madeira Compensada Grafite Revestida de Ilha", qty: 144 },
-                { name: "Aço de Ilha Tecido com Névoa", qty: 150 },
-                { name: "Pilar de Madeira Trata com Seiva Marinha", qty: 144 },
-                { name: "Adesivo de Aritmética de Maré", qty: 80 },
-                { name: "Lágrima do Oceano profundo", qty: 42 },
-                { name: "Cristal Vermelho Brilhante", qty: 210 },
-                { name: "Lente de Onda Lunar", qty: 180 },
-                { name: "Lingote de Prata Lunar", qty: 160 }
+                { name: "+10 Navio Mercante de Epheria: Proa de Dragão Negro", qty: 1 },
+                { name: "+10 Navio Mercante de Epheria: Casco Refinado", qty: 1 },
+                { name: "+10 Navio Mercante de Epheria: Canhão Meina", qty: 1 },
+                { name: "+10 Navio Mercante de Epheria: Vela de Camada", qty: 1 },
+                { name: "Tecido de Linho com a veia da lua gravada", qty: 180 },
+                { name: "Madeira de Construção Envolto com um Brilho Azul Marinho", qty: 170 },
+                { name: "Barra de Sal de Rocha Exuberante", qty: 30 },
+                { name: "Cristal de Pérola Brilhante", qty: 30 },
+                { name: "Olho Abissal", qty: 42 }
             ],
             "Carraca: Equilíbrio": [
-                { name: "Caravela de Epheria +10 (Equipamentos)", qty: 1 },
-                { name: "Madeira Compensada Grafite Revestida de Ilha", qty: 144 },
-                { name: "Aço de Ilha Tecido com Névoa", qty: 150 },
-                { name: "Pilar de Madeira Trata com Seiva Marinha", qty: 144 },
-                { name: "Adesivo de Aritmética de Maré", qty: 80 },
-                { name: "Lágrima do Oceano profundo", qty: 42 },
-                { name: "Cristal Vermelho Brilhante", qty: 210 },
-                { name: "Lente de Onda Lunar", qty: 180 },
-                { name: "Lingote de Prata Lunar", qty: 160 }
+                { name: "+10 Navio Mercante de Epheria: Proa de Dragão Negro", qty: 1 },
+                { name: "+10 Navio Mercante de Epheria: Casco Refinado", qty: 1 },
+                { name: "+10 Navio Mercante de Epheria: Canhão Meina", qty: 1 },
+                { name: "+10 Navio Mercante de Epheria: Vela de Camada", qty: 1 },
+                { name: "Tecido de Linho com a veia da lua gravada", qty: 180 },
+                { name: "Madeira de Construção Envolto com um Brilho Azul Marinho", qty: 144 },
+                { name: "Barra de Sal de Rocha Exuberante", qty: 30 },
+                { name: "Cristal de Pérola Brilhante", qty: 30 },
+                { name: "Olho Abissal", qty: 50 }
             ],
             "Carraca: Volante": [
-                { name: "Galeão de Epheria +10 (Equipamentos)", qty: 1 },
-                { name: "Madeira Compensada Grafite Revestida de Ilha", qty: 144 },
-                { name: "Aço de Ilha Tecido com Névoa", qty: 150 },
-                { name: "Pilar de Madeira Trata com Seiva Marinha", qty: 144 },
-                { name: "Adesivo de Aritmética de Maré", qty: 80 },
-                { name: "Lágrima do Oceano profundo", qty: 42 },
-                { name: "Cristal Vermelho Brilhante", qty: 210 },
-                { name: "Lente de Onda Lunar", qty: 180 },
-                { name: "Lingote de Prata Lunar", qty: 160 }
+                { name: "+10 Contratorpedeiro de Epheria: Proa de Dragão Negro", qty: 1 },
+                { name: "+10 Contratorpedeiro de Epheria: Casco Refinado", qty: 1 },
+                { name: "+10 Contratorpedeiro de Epheria: Canhão Meina", qty: 1 },
+                { name: "+10 Contratorpedeiro de Epheria: Vela de Camada", qty: 1 },
+                { name: "Tecido de Linho com a veia da lua gravada", qty: 210 },
+                { name: "Madeira de Construção Envolto com um Brilho Azul Marinho", qty: 144 },
+                { name: "Barra de Sal de Rocha Exuberante", qty: 30 },
+                { name: "Cristal de Pérola Brilhante", qty: 30 },
+                { name: "Olho Abissal", qty: 42 }
             ],
             "Carraca: Valor": [
-                { name: "Galeão de Epheria +10 (Equipamentos)", qty: 1 },
-                { name: "Madeira Compensada Grafite Revestida de Ilha", qty: 144 },
-                { name: "Aço de Ilha Tecido com Névoa", qty: 150 },
-                { name: "Pilar de Madeira Trata com Seiva Marinha", qty: 144 },
-                { name: "Adesivo de Aritmética de Maré", qty: 80 },
-                { name: "Lágrima do Oceano profundo", qty: 42 },
-                { name: "Cristal Vermelho Brilhante", qty: 210 },
-                { name: "Lente de Onda Lunar", qty: 180 },
-                { name: "Lingote de Prata Lunar", qty: 160 }
+                { name: "+10 Navio Mercante de Epheria: Proa de Dragão Negro", qty: 1 },
+                { name: "+10 Navio Mercante de Epheria: Casco Refinado", qty: 1 },
+                { name: "+10 Navio Mercante de Epheria: Canhão Meina", qty: 1 },
+                { name: "+10 Navio Mercante de Epheria: Vela de Camada ", qty: 1 },
+                { name: "Tecido de Linho com a veia da lua gravada", qty: 180 },
+                { name: "Madeira de Construção Envolto com um Brilho Azul Marinho", qty: 144 },
+                { name: "Barra de Sal de Rocha Exuberante", qty: 35 },
+                { name: "Cristal de Pérola Brilhante", qty: 35 },
+                { name: "Olho Abissal", qty: 42 }
             ]
         };
 
