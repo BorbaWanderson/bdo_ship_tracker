@@ -81,6 +81,17 @@
             padding: 5px 10px;
             margin: 0;
         }
+        .item-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 4px;
+            vertical-align: middle;
+        }
+        .cell-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
     </style>
 </head>
 <body>
@@ -93,12 +104,12 @@
         
         <label for="shipSelect">1. Selecione o Navio:</label>
         <select id="shipSelect" onchange="updateResourceList()">
-            <option value="Caravela de Epheria">Navio Mercante de Epheria (T4)</option>
-            <option value="Galeão de Epheria">Contratorpedeiro de Epheria (T4)</option>
-            <option value="Carraca: Avanço">Carraca: Bravura</option>
+            <option value="Navio Mercante de Epheria">Navio Mercante de Epheria (T4)</option>
+            <option value="Contratorpedeiro de Epheria">Contratorpedeiro de Epheria (T4)</option>
+            <option value="Carraca: Bravura">Carraca: Bravura</option>
             <option value="Carraca: Equilíbrio">Carraca: Equilíbrio</option>
-            <option value="Carraca: Volante">Carraca: Emergência</option>
-            <option value="Carraca: Valor">Carraca: Gradual</option>
+            <option value="Carraca: Emergência">Carraca: Emergência</option>
+            <option value="Carraca: Gradual">Carraca: Gradual</option>
         </select>
 
         <label for="resourceSelect">2. Selecione o Recurso:</label>
@@ -139,78 +150,78 @@
     <script>
         // Banco de Dados de Materiais do BDO
         const bdoDatabase = {
-            "Caravela de Epheria": [
-                { name: "Licença: Navio Mercante de Epheria", qty: 1 },
-                { name: "+10 Epheria: Proa Velha", qty: 1 },
-                { name: "+10 Epheria: Casco Velho", qty: 1 },
-                { name: "+10 Epheria: Canhão Velho", qty: 1 },
-                { name: "+10 Epheria: Vela de Vento Velha", qty: 1 },
-                { name: "Barra de Grafite para Expansão", qty: 100 },
-                { name: "Madeira para Expansão", qty: 100 },
-                { name: "Cola para Expansão", qty: 100 },
-                { name: "Madeira Compensada Revestida de Rubus", qty: 100 },
-                { name: "Barra de Sal Gema", qty: 100 },
-                { name: "Cola com Memórias do Mar Profundo", qty: 4 },
-                { name: "Caule de Alga Profunda", qty: 4 }
+            "Navio Mercante de Epheria": [
+                { name: "Licença: Navio Mercante de Epheria", qty: 1, image: "https://s1.pearlcdn.com/NAEU/Upload/WIKI/3910d6613bb20220629215918178.png" },
+                { name: "+10 Epheria: Proa Velha", qty: 1, image: "https://s1.pearlcdn.com/NAEU/Upload/WIKI/14c2dce912220220629215006574.png" },
+                { name: "+10 Epheria: Casco Velho", qty: 1, image: "https://s1.pearlcdn.com/NAEU/Upload/WIKI/c0b4483561220220629215017092.png" },
+                { name: "+10 Epheria: Canhão Velho", qty: 1, image: "https://s1.pearlcdn.com/NAEU/Upload/WIKI/ba2c9a14d2120220629214615584.png" },
+                { name: "+10 Epheria: Vela de Vento Velha", qty: 1, image: "https://s1.pearlcdn.com/NAEU/Upload/WIKI/89f7817d01d20220629214630223.png" },
+                { name: "Barra de Grafite para Expansão", qty: 100, image: "https://s1.pearlcdn.com/NAEU/Upload/WIKI/bce12286af620220629215555154.png" },
+                { name: "Madeira para Expansão", qty: 100, image: "https://s1.pearlcdn.com/NAEU/Upload/WIKI/563da2f0fa820220629215609649.png" },
+                { name: "Cola para Expansão", qty: 100, image: "https://s1.pearlcdn.com/NAEU/Upload/WIKI/4daad4c1edc20220629215621815.png" },
+                { name: "Madeira Compensada Revestida de Rubus", qty: 100, image: "https://s1.pearlcdn.com/NAEU/Upload/WIKI/54519254c4e20220629215633277.png" },
+                { name: "Barra de Sal Gema", qty: 100, image: "https://s1.pearlcdn.com/NAEU/Upload/WIKI/2f9083f26ac20220629215647768.png" },
+                { name: "Cola com Memórias do Mar Profundo", qty: 4, image: "https://s1.pearlcdn.com/NAEU/Upload/WIKI/34c41779a9820220629215709825.png" },
+                { name: "Caule de Alga Profunda", qty: 4, image: "https://s1.pearlcdn.com/NAEU/Upload/WIKI/b31975e2f6f20220629215723399.png" }
             ],
-            "Galeão de Epheria": [
-                { name: "Licença: Contratorpedeiro de Epheria", qty: 1 },
-                { name: "+10 Epheria: Proa Velha", qty: 1 },
-                { name: "+10 Epheria: Casco Velho", qty: 1 },
-                { name: "+10 Epheria: Canhão Velho", qty: 1 },
-                { name: "+10 Epheria: Vela de Vento Velha", qty: 1 },
-                { name: "Barra de Grafite para Expansão", qty: 100 },
-                { name: "Madeira para Expansão", qty: 100 },
-                { name: "Cola para Expansão", qty: 100 },
-                { name: "Madeira Compensada Revestida de Rubus", qty: 100 },
-                { name: "Madeira de Construção com um brilho de onda", qty: 3 },
-                { name: "Barra de Cobalto", qty: 2 },
-                { name: "Madeira Compensada Gravada com Escama da Lua", qty: 10 },
-                { name: "Caule de Alga Profunda", qty: 4}
+            "Contratorpedeiro de Epheria": [
+                { name: "Licença: Contratorpedeiro de Epheria", qty: 1, image: "https://s1.pearlcdn.com/NAEU/Upload/WIKI/23e1330901020220629215932817.png" },
+                { name: "+10 Epheria: Proa Velha", qty: 1, image: "https://s1.pearlcdn.com/NAEU/Upload/WIKI/14c2dce912220220629215006574.png" },
+                { name: "+10 Epheria: Casco Velho", qty: 1, image: "https://s1.pearlcdn.com/NAEU/Upload/WIKI/c0b4483561220220629215017092.png" },
+                { name: "+10 Epheria: Canhão Velho", qty: 1, image: "https://s1.pearlcdn.com/NAEU/Upload/WIKI/ba2c9a14d2120220629214615584.png" },
+                { name: "+10 Epheria: Vela de Vento Velha", qty: 1, image: "https://s1.pearlcdn.com/NAEU/Upload/WIKI/89f7817d01d20220629214630223.png" },
+                { name: "Barra de Grafite para Expansão", qty: 100, image: "https://s1.pearlcdn.com/NAEU/Upload/WIKI/bce12286af620220629215555154.png" },
+                { name: "Madeira para Expansão", qty: 100, image: "https://s1.pearlcdn.com/NAEU/Upload/WIKI/563da2f0fa820220629215609649.png" },
+                { name: "Cola para Expansão", qty: 100, image: "https://s1.pearlcdn.com/NAEU/Upload/WIKI/4daad4c1edc20220629215621815.png" },
+                { name: "Madeira Compensada Revestida de Rubus", qty: 100, image: "https://s1.pearlcdn.com/NAEU/Upload/WIKI/54519254c4e20220629215633277.png" },
+                { name: "Madeira de Construção com um brilho de onda", qty: 3, image: "https://s1.pearlcdn.com/NAEU/Upload/WIKI/25d75fd7e9720220629220129506.png" },
+                { name: "Barra de Cobalto", qty: 2, image: "https://s1.pearlcdn.com/NAEU/Upload/WIKI/e1b8693f5bd20220629220144453.png" },
+                { name: "Madeira Compensada Gravada com Escama da Lua", qty: 10, image: "https://s1.pearlcdn.com/NAEU/Upload/WIKI/0ce26031ae320220629220156961.png" },
+                { name: "Caule de Alga Profunda", qty: 4, image: "https://s1.pearlcdn.com/NAEU/Upload/WIKI/b31975e2f6f20220629215723399.png"}
             ],
-            "Carraca: Avanço": [
-                { name: "+10 Navio Mercante de Epheria: Proa de Dragão Negro", qty: 1 },
-                { name: "+10 Navio Mercante de Epheria: Casco Refinado", qty: 1 },
-                { name: "+10 Navio Mercante de Epheria: Canhão Meina", qty: 1 },
-                { name: "+10 Navio Mercante de Epheria: Vela de Camada", qty: 1 },
-                { name: "Tecido de Linho com a veia da lua gravada", qty: 180 },
-                { name: "Madeira de Construção Envolto com um Brilho Azul Marinho", qty: 170 },
-                { name: "Barra de Sal de Rocha Exuberante", qty: 30 },
-                { name: "Cristal de Pérola Brilhante", qty: 30 },
-                { name: "Olho Abissal", qty: 42 }
+            "Carraca: Bravura": [
+                { name: "+10 Navio Mercante de Epheria: Proa de Dragão Negro", qty: 1, image: "https://s1.pearlcdn.com/KR/Upload/WIKI/cb05f88c79920220616155657828.png" },
+                { name: "+10 Navio Mercante de Epheria: Casco Refinado", qty: 1, image: "https://s1.pearlcdn.com/KR/Upload/WIKI/ff8c34605b220220616161322011.png" },
+                { name: "+10 Navio Mercante de Epheria: Canhão Meina", qty: 1, image: "https://s1.pearlcdn.com/KR/Upload/WIKI/16e8fe60c6a20220616161336110.png" },
+                { name: "+10 Navio Mercante de Epheria: Vela de Camada", qty: 1, image: "https://s1.pearlcdn.com/KR/Upload/WIKI/fea9e5b7ecd20220616161355215.png" },
+                { name: "Tecido de Linho com a veia da lua gravada", qty: 180, image: "https://s1.pearlcdn.com/KR/Upload/WIKI/b4559ff66ad20220616155829984.png" },
+                { name: "Madeira de Construção Envolto com um Brilho Azul Marinho", qty: 170, image: "https://s1.pearlcdn.com/KR/Upload/WIKI/7ce5cb860f820220616155838955.png" },
+                { name: "Barra de Sal de Rocha Exuberante", qty: 30, image: "https://s1.pearlcdn.com/KR/Upload/WIKI/4d7e2efcae020220616155909995.png" },
+                { name: "Cristal de Pérola Brilhante", qty: 30, image: "https://s1.pearlcdn.com/KR/Upload/WIKI/829ec348fef20220616155953533.png" },
+                { name: "Olho Abissal", qty: 42, image: "https://s1.pearlcdn.com/KR/Upload/WIKI/3347e569eb420220616160002818.png" }
             ],
             "Carraca: Equilíbrio": [
-                { name: "+10 Navio Mercante de Epheria: Proa de Dragão Negro", qty: 1 },
-                { name: "+10 Navio Mercante de Epheria: Casco Refinado", qty: 1 },
-                { name: "+10 Navio Mercante de Epheria: Canhão Meina", qty: 1 },
-                { name: "+10 Navio Mercante de Epheria: Vela de Camada", qty: 1 },
-                { name: "Tecido de Linho com a veia da lua gravada", qty: 180 },
-                { name: "Madeira de Construção Envolto com um Brilho Azul Marinho", qty: 144 },
-                { name: "Barra de Sal de Rocha Exuberante", qty: 30 },
-                { name: "Cristal de Pérola Brilhante", qty: 30 },
-                { name: "Olho Abissal", qty: 50 }
+                { name: "+10 Navio Mercante de Epheria: Proa de Dragão Negro", qty: 1, image: "https://s1.pearlcdn.com/KR/Upload/WIKI/cb05f88c79920220616155657828.png" },
+                { name: "+10 Navio Mercante de Epheria: Casco Refinado", qty: 1, image: "https://s1.pearlcdn.com/KR/Upload/WIKI/a5b7a582acd20220616155713937.png" },
+                { name: "+10 Navio Mercante de Epheria: Canhão Meina", qty: 1, image: "https://s1.pearlcdn.com/KR/Upload/WIKI/e7b1873077a20220616155732471.png" },
+                { name: "+10 Navio Mercante de Epheria: Vela de Camada", qty: 1, image: "https://s1.pearlcdn.com/KR/Upload/WIKI/caa9e17f7d420220616155753187.png" },
+                { name: "Tecido de Linho com a veia da lua gravada", qty: 180, image: "https://s1.pearlcdn.com/KR/Upload/WIKI/b4559ff66ad20220616155829984.png" },
+                { name: "Madeira de Construção Envolto com um Brilho Azul Marinho", qty: 144, image: "https://s1.pearlcdn.com/KR/Upload/WIKI/7ce5cb860f820220616155838955.png" },
+                { name: "Barra de Sal de Rocha Exuberante", qty: 30, image: "https://s1.pearlcdn.com/KR/Upload/WIKI/4d7e2efcae020220616155909995.png" },
+                { name: "Cristal de Pérola Brilhante", qty: 30, image: "https://s1.pearlcdn.com/KR/Upload/WIKI/829ec348fef20220616155953533.png" },
+                { name: "Olho Abissal", qty: 50, image: "https://s1.pearlcdn.com/KR/Upload/WIKI/3347e569eb420220616160002818.png" }
             ],
-            "Carraca: Volante": [
-                { name: "+10 Contratorpedeiro de Epheria: Proa de Dragão Negro", qty: 1 },
-                { name: "+10 Contratorpedeiro de Epheria: Casco Refinado", qty: 1 },
-                { name: "+10 Contratorpedeiro de Epheria: Canhão Meina", qty: 1 },
-                { name: "+10 Contratorpedeiro de Epheria: Vela de Camada", qty: 1 },
-                { name: "Tecido de Linho com a veia da lua gravada", qty: 210 },
-                { name: "Madeira de Construção Envolto com um Brilho Azul Marinho", qty: 144 },
-                { name: "Barra de Sal de Rocha Exuberante", qty: 30 },
-                { name: "Cristal de Pérola Brilhante", qty: 30 },
-                { name: "Olho Abissal", qty: 42 }
+            "Carraca: Emergência": [
+                { name: "+10 Contratorpedeiro de Epheria: Proa de Dragão Negro", qty: 1, image: "https://s1.pearlcdn.com/KR/Upload/WIKI/cb05f88c79920220616155657828.png" },
+                { name: "+10 Contratorpedeiro de Epheria: Casco Refinado", qty: 1, image: "https://s1.pearlcdn.com/KR/Upload/WIKI/ff8c34605b220220616161322011.png" },
+                { name: "+10 Contratorpedeiro de Epheria: Canhão Meina", qty: 1, image: "https://s1.pearlcdn.com/KR/Upload/WIKI/16e8fe60c6a20220616161336110.png" },
+                { name: "+10 Contratorpedeiro de Epheria: Vela de Camada", qty: 1, image: "https://s1.pearlcdn.com/KR/Upload/WIKI/fea9e5b7ecd20220616161355215.png" },
+                { name: "Tecido de Linho com a veia da lua gravada", qty: 210, image: "https://s1.pearlcdn.com/KR/Upload/WIKI/b4559ff66ad20220616155829984.png" },
+                { name: "Madeira de Construção Envolto com um Brilho Azul Marinho", qty: 144, image: "https://s1.pearlcdn.com/KR/Upload/WIKI/7ce5cb860f820220616155838955.png" },
+                { name: "Barra de Sal de Rocha Exuberante", qty: 30, image: "https://s1.pearlcdn.com/KR/Upload/WIKI/4d7e2efcae020220616155909995.png" },
+                { name: "Cristal de Pérola Brilhante", qty: 30, image: "https://s1.pearlcdn.com/KR/Upload/WIKI/829ec348fef20220616155953533.png" },
+                { name: "Olho Abissal", qty: 42, image: "https://s1.pearlcdn.com/KR/Upload/WIKI/3347e569eb420220616160002818.png" }
             ],
-            "Carraca: Valor": [
-                { name: "+10 Navio Mercante de Epheria: Proa de Dragão Negro", qty: 1 },
-                { name: "+10 Navio Mercante de Epheria: Casco Refinado", qty: 1 },
-                { name: "+10 Navio Mercante de Epheria: Canhão Meina", qty: 1 },
-                { name: "+10 Navio Mercante de Epheria: Vela de Camada ", qty: 1 },
-                { name: "Tecido de Linho com a veia da lua gravada", qty: 180 },
-                { name: "Madeira de Construção Envolto com um Brilho Azul Marinho", qty: 144 },
-                { name: "Barra de Sal de Rocha Exuberante", qty: 35 },
-                { name: "Cristal de Pérola Brilhante", qty: 35 },
-                { name: "Olho Abissal", qty: 42 }
+            "Carraca: Gradual": [
+                { name: "+10 Navio Mercante de Epheria: Proa de Dragão Negro", qty: 1, image: "https://s1.pearlcdn.com/KR/Upload/WIKI/cb05f88c79920220616155657828.png" },
+                { name: "+10 Navio Mercante de Epheria: Casco Refinado", qty: 1, image: "https://s1.pearlcdn.com/KR/Upload/WIKI/a5b7a582acd20220616155713937.png" },
+                { name: "+10 Navio Mercante de Epheria: Canhão Meina", qty: 1, image: "https://s1.pearlcdn.com/KR/Upload/WIKI/e7b1873077a20220616155732471.png" },
+                { name: "+10 Navio Mercante de Epheria: Vela de Camada ", qty: 1, image: "https://s1.pearlcdn.com/KR/Upload/WIKI/caa9e17f7d420220616155753187.png" },
+                { name: "Tecido de Linho com a veia da lua gravada", qty: 180, image: "https://s1.pearlcdn.com/KR/Upload/WIKI/b4559ff66ad20220616155829984.png" },
+                { name: "Madeira de Construção Envolto com um Brilho Azul Marinho", qty: 144, image: "https://s1.pearlcdn.com/KR/Upload/WIKI/7ce5cb860f820220616155838955.png" },
+                { name: "Barra de Sal de Rocha Exuberante", qty: 35, image: "https://s1.pearlcdn.com/KR/Upload/WIKI/4d7e2efcae020220616155909995.png" },
+                { name: "Cristal de Pérola Brilhante", qty: 35, image: "https://s1.pearlcdn.com/KR/Upload/WIKI/829ec348fef20220616155953533.png" },
+                { name: "Olho Abissal", qty: 42, image: "https://s1.pearlcdn.com/KR/Upload/WIKI/3347e569eb420220616160002818.png" }
             ]
         };
 
@@ -228,6 +239,7 @@
                 opt.value = item.name;
                 opt.textContent = item.name;
                 opt.dataset.qty = item.qty;
+                opt.dataset.image = item.image;
                 resourceSelect.appendChild(opt);
             });
 
@@ -256,6 +268,10 @@
             const name = document.getElementById('resourceSelect').value;
             const required = parseInt(document.getElementById('requiredQty').value);
             const current = parseInt(document.getElementById('currentQty').value) || 0;
+            const selectedOption = document.getElementById('resourceSelect').selectedOptions[0];
+            const image = (selectedOption && selectedOption.dataset.image !== "undefined")
+            ? selectedOption.dataset.image : 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
+
 
             if (!name || isNaN(required)) {
                 alert('Selecione um recurso válido.');
@@ -268,8 +284,9 @@
             if (existingIndex > -1) {
                 resources[existingIndex].current = current;
                 resources[existingIndex].required = required;
+                resources[existingIndex].image = image;
             } else {
-                resources.push({ ship, name, required, current });
+                resources.push({ ship, name, required, current, image });
             }
 
             document.getElementById('currentQty').value = '';
@@ -293,7 +310,12 @@
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
                     <td>${item.ship}</td>
-                    <td>${item.name}</td>
+                    <td>
+                        <div class="cell-item">
+                            <img src="${item.image}" class="item-icon" alt="" onerror="this.style.display='none'">
+                            <span>${item.name}</span>
+                        </div>    
+                    </td>
                     <td>${item.current}</td>
                     <td>${item.required}</td>
                     <td><strong style="color: ${missing === 0 ? '#4caf50' : '#ff4d4d'}">${missing}</strong></td>
