@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BDO - Tracker de Navios</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #1e1e2f;
+            color: #ffffff;
+            margin: 20px;
+            padding: 0;
+        }
+        h1, h2 {
+            color: #4da6ff;
+        }
+        .card {
+            background-color: #2b2b40;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 10px;
+        }
+        select, input, button {
+            padding: 10px;
+            margin-top: 5px;
+            border-radius: 5px;
+            border: 1px solid #444;
+            background-color: #3b3b54;
+            color: #fff;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #4da6ff;
+            color: #1e1e2f;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 15px;
+            border: none;
+        }
+        button:hover {
+            background-color: #3385d6;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #444;
+        }
+        th {
+            background-color: #3b3b54;
+            color: #4da6ff;
+        }
+        .progress-bar {
+            background-color: #444;
+            border-radius: 5px;
+            overflow: hidden;
+            height: 15px;
+            width: 100%;
+            margin-top: 5px;
+        }
+        .progress {
+            background-color: #4caf50;
+            height: 100%;
+            width: 0%;
+        }
+        .delete-btn {
+            background-color: #ff4d4d;
+            width: auto;
+            padding: 5px 10px;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Tracker de Construção Naval - BDO</h1>
+
+    <!-- Seleção e Formulário -->
+    <div class="card">
+        <h2>Adicionar / Atualizar Progresso</h2>
+        
+        <label for="shipSelect">1. Selecione o Navio:</label>
+        <select id="shipSelect" onchange="updateResourceList()">
+            <option value="Caravela de Epheria">Caravela de Epheria (T4)</option>
+            <option value="Galeão de Epheria">Galeão de Epheria (T4)</option>
+            <option value="Carraca: Avanço">Carraca: Avanço (Advance)</option>
+            <option value="Carraca: Equilíbrio">Carraca: Equilíbrio (Balance)</option>
+            <option value="Carraca: Volante">Carraca: Volante</option>
+            <option value="Carraca: Valor">Carraca: Valor</option>
+        </select>
+
+        <label for="resourceSelect">2. Selecione o Recurso:</label>
+        <select id="resourceSelect" onchange="updateRequiredQty()">
+            <!-- Preenchido via JavaScript de acordo com o navio -->
+        </select>
+
+        <label for="requiredQty">Quantidade Necessária (Total):</label>
+        <input type="number" id="requiredQty" readonly style="opacity: 0.7; cursor: not-allowed;">
+
+        <label for="currentQty">Quantidade que Você Já Tem:</label>
+        <input type="number" id="currentQty" placeholder="Ex: 50">
+
+        <button onclick="addResource()">Atualizar Progresso</button>
+    </div>
+
+    <!-- Lista de Recursos Salvos -->
+    <div class="card">
+        <h2>Seus Recursos em Progresso</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Navio</th>
+                    <th>Recurso</th>
+                    <th>Possuído</th>
+                    <th>Necessário</th>
+                    <th>Falta</th>
+                    <th>Progresso</th>
+                    <th>Ação</th>
+                </tr>
+            </thead>
+            <tbody id="resourceList">
+                <!-- Linhas inseridas dinamicamente -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        // Banco de Dados de Materiais do BDO
+        const bdoDatabase = {
+            "Caravela de Epheria": [
+                { name: "Licença: Veleiro de Epheria", qty: 1 },
+                { name: "Madeira Compensada Grafite Revestida de Ilha", qty: 100 },
+                { name: "Aço de Ilha Tecido com Névoa", qty: 100 },
+                { name: "Pilar de Madeira Trata com Seiva Marinha", qty: 100 },
+                { name: "Adesivo de Aritmética de Maré", qty: 100 },
+                { name: "Lingote de Cobalto Verde", qty: 50 },
+                { name: "Madeira Enfestada", qty: 500 },
+                { name: "Aço Enfestado", qty: 500 }
+            ],
+            "Galeão de Epheria": [
+                { name: "Licença: Fragata de Epheria", qty: 1 },
+                { name: "Madeira Compensada Grafite Revestida de Ilha", qty: 100 },
+                { name: "Aço de Ilha Tecido com Névoa", qty: 100 },
+                { name: "Pilar de Madeira Trata com Seiva Marinha", qty: 100 },
+                { name: "Adesivo de Aritmética de Maré", qty: 100 },
+                { name: "Lingote de Cobalto Verde", qty: 50 },
+                { name: "Madeira Enfestada", qty: 500 },
+                { name: "Aço Enfestado", qty: 500 }
+            ],
+            "Carraca: Avanço": [
+                { name: "Caravela de Epheria +10 (Equipamentos)", qty: 1 },
+                { name: "Madeira Compensada Grafite Revestida de Ilha", qty: 144 },
+                { name: "Aço de Ilha Tecido com Névoa", qty: 150 },
+                { name: "Pilar de Madeira Trata com Seiva Marinha", qty: 144 },
+                { name: "Adesivo de Aritmética de Maré", qty: 80 },
+                { name: "Lágrima do Oceano profundo", qty: 42 },
+                { name: "Cristal Vermelho Brilhante", qty: 210 },
+                { name: "Lente de Onda Lunar", qty: 180 },
+                { name: "Lingote de Prata Lunar", qty: 160 }
+            ],
+            "Carraca: Equilíbrio": [
+                { name: "Caravela de Epheria +10 (Equipamentos)", qty: 1 },
+                { name: "Madeira Compensada Grafite Revestida de Ilha", qty: 144 },
+                { name: "Aço de Ilha Tecido com Névoa", qty: 150 },
+                { name: "Pilar de Madeira Trata com Seiva Marinha", qty: 144 },
+                { name: "Adesivo de Aritmética de Maré", qty: 80 },
+                { name: "Lágrima do Oceano profundo", qty: 42 },
+                { name: "Cristal Vermelho Brilhante", qty: 210 },
+                { name: "Lente de Onda Lunar", qty: 180 },
+                { name: "Lingote de Prata Lunar", qty: 160 }
+            ],
+            "Carraca: Volante": [
+                { name: "Galeão de Epheria +10 (Equipamentos)", qty: 1 },
+                { name: "Madeira Compensada Grafite Revestida de Ilha", qty: 144 },
+                { name: "Aço de Ilha Tecido com Névoa", qty: 150 },
+                { name: "Pilar de Madeira Trata com Seiva Marinha", qty: 144 },
+                { name: "Adesivo de Aritmética de Maré", qty: 80 },
+                { name: "Lágrima do Oceano profundo", qty: 42 },
+                { name: "Cristal Vermelho Brilhante", qty: 210 },
+                { name: "Lente de Onda Lunar", qty: 180 },
+                { name: "Lingote de Prata Lunar", qty: 160 }
+            ],
+            "Carraca: Valor": [
+                { name: "Galeão de Epheria +10 (Equipamentos)", qty: 1 },
+                { name: "Madeira Compensada Grafite Revestida de Ilha", qty: 144 },
+                { name: "Aço de Ilha Tecido com Névoa", qty: 150 },
+                { name: "Pilar de Madeira Trata com Seiva Marinha", qty: 144 },
+                { name: "Adesivo de Aritmética de Maré", qty: 80 },
+                { name: "Lágrima do Oceano profundo", qty: 42 },
+                { name: "Cristal Vermelho Brilhante", qty: 210 },
+                { name: "Lente de Onda Lunar", qty: 180 },
+                { name: "Lingote de Prata Lunar", qty: 160 }
+            ]
+        };
+
+        let resources = JSON.parse(localStorage.getItem('bdo_resources')) || [];
+
+        // Atualiza a lista de recursos de acordo com o navio selecionado
+        function updateResourceList() {
+            const ship = document.getElementById('shipSelect').value;
+            const resourceSelect = document.getElementById('resourceSelect');
+            resourceSelect.innerHTML = '';
+
+            const items = bdoDatabase[ship] || [];
+            items.forEach((item, index) => {
+                const opt = document.createElement('option');
+                opt.value = item.name;
+                opt.textContent = item.name;
+                opt.dataset.qty = item.qty;
+                resourceSelect.appendChild(opt);
+            });
+
+            updateRequiredQty();
+        }
+
+        // Preenche o campo "Quantidade Necessária" automaticamente
+        function updateRequiredQty() {
+            const resourceSelect = document.getElementById('resourceSelect');
+            const selectedOption = resourceSelect.options[resourceSelect.selectedIndex];
+            
+            if (selectedOption) {
+                document.getElementById('requiredQty').value = selectedOption.dataset.qty;
+            } else {
+                document.getElementById('requiredQty').value = '';
+            }
+        }
+
+        function saveToStorage() {
+            localStorage.setItem('bdo_resources', JSON.stringify(resources));
+            renderTable();
+        }
+
+        function addResource() {
+            const ship = document.getElementById('shipSelect').value;
+            const name = document.getElementById('resourceSelect').value;
+            const required = parseInt(document.getElementById('requiredQty').value);
+            const current = parseInt(document.getElementById('currentQty').value) || 0;
+
+            if (!name || isNaN(required)) {
+                alert('Selecione um recurso válido.');
+                return;
+            }
+
+            // Procura se já existe esse item no tracker
+            const existingIndex = resources.findIndex(r => r.ship === ship && r.name === name);
+
+            if (existingIndex > -1) {
+                resources[existingIndex].current = current;
+                resources[existingIndex].required = required;
+            } else {
+                resources.push({ ship, name, required, current });
+            }
+
+            document.getElementById('currentQty').value = '';
+
+            saveToStorage();
+        }
+
+        function deleteResource(index) {
+            resources.splice(index, 1);
+            saveToStorage();
+        }
+
+        function renderTable() {
+            const tbody = document.getElementById('resourceList');
+            tbody.innerHTML = '';
+
+            resources.forEach((item, index) => {
+                const missing = Math.max(0, item.required - item.current);
+                const percent = Math.min(100, Math.round((item.current / item.required) * 100)) || 0;
+
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${item.ship}</td>
+                    <td>${item.name}</td>
+                    <td>${item.current}</td>
+                    <td>${item.required}</td>
+                    <td><strong style="color: ${missing === 0 ? '#4caf50' : '#ff4d4d'}">${missing}</strong></td>
+                    <td>
+                        ${percent}%
+                        <div class="progress-bar">
+                            <div class="progress" style="width: ${percent}%;"></div>
+                        </div>
+                    </td>
+                    <td><button class="delete-btn" onclick="deleteResource(${index})">Remover</button></td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // Inicialização
+        updateResourceList();
+        renderTable();
+    </script>
+</body>
+</html>
